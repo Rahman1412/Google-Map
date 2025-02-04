@@ -24,11 +24,12 @@ class PermissionRepository @Inject constructor(
     private val locationService : FusedLocationProviderClient
 ) {
 
-    suspend fun requestPermission() {
+    suspend fun requestPermission(getLocation : () -> Unit) {
         Dexter.withContext(context)
             .withPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION)
             .withListener(object : PermissionListener {
                 override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
+                    getLocation()
                 }
 
                 override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
